@@ -35,16 +35,6 @@ export interface Ticket {
   contact?: { name: string; phone: string; email?: string; bestTime?: string; message?: string };
 }
 
-export const REASON_LABELS: Record<HandoffReason, string> = {
-  requested: "Asked for a person",
-  complaint: "Complaint or legal concern",
-  hardship: "Payment hardship",
-  existing_customer: "Existing customer request",
-  complex_deal: "Complex deal",
-  cannot_answer: "Question outside the knowledge base",
-  ready_to_apply: "Ready to apply",
-};
-
 const FILE = process.env.STERLING_HANDOFF_FILE || path.join(process.cwd(), "data", "handoffs.json");
 const memory = globalThis as unknown as { __sterlingTickets?: Ticket[]; __sterlingWrite?: Promise<void> };
 

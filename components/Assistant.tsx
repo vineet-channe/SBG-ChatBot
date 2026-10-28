@@ -125,7 +125,7 @@ export default function Assistant() {
 
       <footer className={styles.footer}>
         <span>Unofficial concept prototype - not affiliated with or endorsed by SBG Funding.</span>
-        <span>Estimates are illustrative, not offers. <a href="/specialist">Specialist console</a></span>
+        <span>Estimates are illustrative, not offers. <a href="/specialist">Advisor inbox</a></span>
       </footer>
 
       <Inspector open={inspectorOpen} traces={chat.traces} onClose={() => setInspectorOpen(false)} />

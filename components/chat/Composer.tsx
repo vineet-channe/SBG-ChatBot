@@ -29,13 +29,15 @@ export function Composer({ busy, hasMessages, onSend, speech }: Props) {
   // Spoken input is sent as soon as the speaker pauses, exactly like typed text.
   const voice = useSpeechInput(submit);
 
-  // Grow with the text, up to the max height in CSS.
+  const placeholder = voice.listening ? "Listening…" : hasMessages ? "Reply, or ask anything" : "Ask a question or describe your business";
+
+  // Grow with the text (or a placeholder that wraps), up to the max height in CSS.
   useEffect(() => {
     const el = textarea.current;
     if (!el) return;
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
-  }, [value, voice.interim]);
+  }, [value, voice.interim, placeholder]);
 
   return (
     <div className={styles.composer}>
@@ -69,7 +71,7 @@ export function Composer({ busy, hasMessages, onSend, speech }: Props) {
           rows={1}
           value={voice.listening ? voice.interim : value}
           readOnly={voice.listening}
-          placeholder={voice.listening ? "Listening…" : hasMessages ? "Reply, or ask anything" : "Ask a question or describe your business"}
+          placeholder={placeholder}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {

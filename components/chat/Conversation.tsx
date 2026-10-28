@@ -143,9 +143,16 @@ export function Conversation({ messages, busy, ...handlers }: Props) {
     if (pinned.current) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
+  // Only scrolling up (which only the reader does) unpins. Smooth scrolls to the newest
+  // message fire scroll events on the way down, and those must not count as leaving.
+  const lastTop = useRef(0);
   const onScroll = () => {
     const el = scroller.current;
-    if (el) pinned.current = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+    if (!el) return;
+    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+    if (el.scrollTop < lastTop.current - 2) pinned.current = nearBottom;
+    else if (nearBottom) pinned.current = true;
+    lastTop.current = el.scrollTop;
   };
 
   const lastId = messages.at(-1)?.id;

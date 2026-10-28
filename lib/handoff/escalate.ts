@@ -2,7 +2,7 @@
  * One place that performs an escalation, whether a guardrail rule triggered it
  * (deterministic) or the model decided to (escalate_to_human tool).
  */
-import type { ChatEvent, ClientState, HandoffReason, TraceEvent } from "@/lib/chat/protocol";
+import { SERVICING_REASONS, type ChatEvent, type ClientState, type HandoffReason, type TraceEvent } from "@/lib/chat/protocol";
 import { evaluate } from "@/lib/engine/eligibility";
 import { hoursStatus } from "@/lib/engine/hours";
 import { PRODUCTS } from "@/lib/sbg/products";
@@ -26,14 +26,16 @@ export async function escalate(ctx: EscalationContext, reason: HandoffReason, no
   const existing = ctx.state.ticketId ? await getTicket(ctx.state.ticketId) : undefined;
   const priority: Ticket["priority"] = HIGH_PRIORITY.includes(reason) || existing?.priority === "high" ? "high" : "normal";
   const result = evaluate(ctx.state.profile);
+  // Product matches only mean something for a new-financing lead whose need is known.
+  const lead = !SERVICING_REASONS.includes(reason) && ctx.state.profile.purpose !== undefined;
   const fields = {
     sessionId: ctx.state.sessionId,
     reason,
     priority,
     note,
     profile: ctx.state.profile,
-    meetsMinimums: result.meetsMinimums,
-    topMatches: result.matches.filter((m) => m.status !== "not_now").slice(0, 3).map((m) => PRODUCTS[m.product].name),
+    meetsMinimums: lead ? result.meetsMinimums : null,
+    topMatches: lead ? result.matches.filter((m) => m.status !== "not_now").slice(0, 3).map((m) => PRODUCTS[m.product].name) : [],
     transcript: ctx.state.history.slice(-16),
   };
   const summary = templateSummary(fields);

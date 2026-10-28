@@ -1,35 +1,160 @@
 {
   "description": "Guardrail golden set. 'route' is where the message must go: human / complaint / hardship / existing_customer, or null for a normal question the assistant should answer. 'pii' lists the redactions expected.",
   "cases": [
-    { "text": "Can I talk to a real person?", "route": "human" },
-    { "text": "I'd like to speak with an advisor please", "route": "human" },
-    { "text": "agent", "route": "human" },
-    { "text": "Please call me back tomorrow morning", "route": "human" },
-    { "text": "connect me with a loan officer", "route": "human" },
-    { "text": "Is there a human I can chat with?", "route": null },
-    { "text": "I want to file a complaint about my advisor", "route": "complaint" },
-    { "text": "my lawyer will be in touch", "route": "complaint" },
-    { "text": "This feels like a scam", "route": "complaint" },
-    { "text": "I can't make my payment this week", "route": "hardship" },
-    { "text": "we missed a payment and I'm worried", "route": "hardship" },
-    { "text": "We're behind on payments since the slow season", "route": "hardship" },
-    { "text": "What's my payoff amount?", "route": "existing_customer" },
-    { "text": "can I change my payment schedule to monthly", "route": "existing_customer" },
-    { "text": "I already have a loan with SBG and want more", "route": "existing_customer" },
-    { "text": "How do renewals work?", "route": null },
-    { "text": "What happens if I miss a payment?", "route": null },
-    { "text": "Do you require a personal guarantee?", "route": null },
-    { "text": "How much can I borrow for a restaurant?", "route": null },
-    { "text": "What's the difference between a term loan and a line of credit?", "route": null },
-    { "text": "Do you charge a fee to apply?", "route": null },
-    { "text": "Can a sole proprietor apply?", "route": null },
-    { "text": "What's your phone number?", "route": null },
-    { "text": "My SSN is 123-45-6789, can you check my credit?", "route": null, "pii": ["ssn"] },
-    { "text": "social security number 123456789", "route": null, "pii": ["ssn"] },
-    { "text": "routing number 021000021 and account 000123456789", "route": null, "pii": ["bank_account"] },
-    { "text": "charge my card 4242 4242 4242 4242", "route": null, "pii": ["card"] },
-    { "text": "Call me at 212-555-0147", "route": "human", "pii": [] },
-    { "text": "we did 1250000 in revenue last year", "route": null, "pii": [] },
-    { "text": "EIN is 12-3456789", "route": null, "pii": [] }
+    {
+      "text": "Can I talk to a real person?",
+      "route": "human"
+    },
+    {
+      "text": "I'd like to speak with an advisor please",
+      "route": "human"
+    },
+    {
+      "text": "agent",
+      "route": "human"
+    },
+    {
+      "text": "Please call me back tomorrow morning",
+      "route": "human"
+    },
+    {
+      "text": "connect me with a loan officer",
+      "route": "human"
+    },
+    {
+      "text": "Is there a human I can chat with?",
+      "route": null
+    },
+    {
+      "text": "I want to file a complaint about my advisor",
+      "route": "complaint"
+    },
+    {
+      "text": "my lawyer will be in touch",
+      "route": "complaint"
+    },
+    {
+      "text": "This feels like a scam",
+      "route": "complaint"
+    },
+    {
+      "text": "I can't make my payment this week",
+      "route": "hardship"
+    },
+    {
+      "text": "we missed a payment and I'm worried",
+      "route": "hardship"
+    },
+    {
+      "text": "We're behind on payments since the slow season",
+      "route": "hardship"
+    },
+    {
+      "text": "What's my payoff amount?",
+      "route": "existing_customer"
+    },
+    {
+      "text": "can I change my payment schedule to monthly",
+      "route": "existing_customer"
+    },
+    {
+      "text": "I already have a loan with SBG and want more",
+      "route": "existing_customer"
+    },
+    {
+      "text": "How do renewals work?",
+      "route": null
+    },
+    {
+      "text": "What happens if I miss a payment?",
+      "route": null
+    },
+    {
+      "text": "Do you require a personal guarantee?",
+      "route": null
+    },
+    {
+      "text": "How much can I borrow for a restaurant?",
+      "route": null
+    },
+    {
+      "text": "What's the difference between a term loan and a line of credit?",
+      "route": null
+    },
+    {
+      "text": "Do you charge a fee to apply?",
+      "route": null
+    },
+    {
+      "text": "Can a sole proprietor apply?",
+      "route": null
+    },
+    {
+      "text": "What's your phone number?",
+      "route": null
+    },
+    {
+      "text": "My SSN is 123-45-6789, can you check my credit?",
+      "route": null,
+      "pii": [
+        "ssn"
+      ]
+    },
+    {
+      "text": "social security number 123456789",
+      "route": null,
+      "pii": [
+        "ssn"
+      ]
+    },
+    {
+      "text": "routing number 021000021 and account 000123456789",
+      "route": null,
+      "pii": [
+        "bank_account"
+      ]
+    },
+    {
+      "text": "charge my card 4242 4242 4242 4242",
+      "route": null,
+      "pii": [
+        "card"
+      ]
+    },
+    {
+      "text": "Call me at 212-555-0147",
+      "route": "human",
+      "pii": []
+    },
+    {
+      "text": "we did 1250000 in revenue last year",
+      "route": null,
+      "pii": []
+    },
+    {
+      "text": "EIN is 12-3456789",
+      "route": null,
+      "pii": []
+    },
+    {
+      "text": "Honestly we had a rough winter and I cannot make this week's payment on my current advance",
+      "route": "hardship"
+    },
+    {
+      "text": "We’re struggling to keep up with our payments",
+      "route": "hardship"
+    },
+    {
+      "text": "I can’t make my payment this week",
+      "route": "hardship"
+    },
+    {
+      "text": "Can I talk to someone? I’d rather not use a bot",
+      "route": "human"
+    },
+    {
+      "text": "I can't afford a big weekly payment, what are my options?",
+      "route": null
+    }
   ]
 }

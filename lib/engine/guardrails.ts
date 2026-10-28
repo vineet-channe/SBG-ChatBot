@@ -71,7 +71,7 @@ const RULES: { route: Exclude<Route, null>; name: string; pattern: RegExp }[] = 
   {
     route: "hardship",
     name: "payment_hardship",
-    pattern: /\b((can'?t|cannot|unable to|won'?t be able to) (make|afford|pay)( (my|the|this|next|a))? (payments?|loan|advance)|missed (a |my |the )?payments?|behind on (my |our )?payments|default(ed|ing)? on|garnish|in collections?)\b/i,
+    pattern: /\b((can'?t|cannot|unable to|won'?t be able to|not able to|struggling to) (make|afford|pay|cover|keep up with)( (my|our|the|this|next|a|an|current|upcoming|weekly|daily|monthly|(this|next) (week|month)'s|(today|tomorrow)'s))* (payments?|loan|advance|installments?)|missed (a |my |our |the )?payments?|(fallen|falling|fell|got|are|we're|i'm) behind on (my |our |the )?payments|behind on payments|default(ed|ing)? on|garnish(ed|ment)?|in collections?)\b/i,
   },
   {
     route: "human",
@@ -90,11 +90,13 @@ const INJECTION = /\b(ignore (all |any |the )?(previous|prior|above|earlier) (in
 export function checkInput(raw: string): GuardrailResult {
   const { text, redactions } = redactPII(raw);
   const matched: string[] = redactions.map((r) => `pii:${r.kind}`);
+  // Phones type curly apostrophes ("can’t"); the rules are written with straight ones.
+  const probe = text.replace(/[\u2018\u2019\u02bc]/g, "'");
   let route: Route = null;
   for (const rule of RULES) {
-    if (rule.pattern.test(text)) { route = rule.route; matched.push(`route:${rule.name}`); break; }
+    if (rule.pattern.test(probe)) { route = rule.route; matched.push(`route:${rule.name}`); break; }
   }
-  const injectionSuspected = INJECTION.test(text);
+  const injectionSuspected = INJECTION.test(probe);
   if (injectionSuspected) matched.push("injection_marker");
   return { text, redactions, route, injectionSuspected, matched };
 }

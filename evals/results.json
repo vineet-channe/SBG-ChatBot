@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-10-28T22:53:11.336Z",
+  "ranAt": "2026-10-28T23:28:58.879Z",
   "retrieval": [
     {
       "mode": "dense",
@@ -286,7 +286,7 @@
     }
   ],
   "guardrails": {
-    "cases": 30,
+    "cases": 35,
     "routeAccuracy": 1,
     "escalationPrecision": 1,
     "escalationRecall": 1,

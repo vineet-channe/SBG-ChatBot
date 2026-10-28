@@ -60,6 +60,23 @@ export type HandoffReason =
   | "cannot_answer"
   | "ready_to_apply";
 
+export const REASON_LABELS: Record<HandoffReason, string> = {
+  requested: "Asked for a person",
+  complaint: "Complaint or legal concern",
+  hardship: "Payment hardship",
+  existing_customer: "Existing customer request",
+  complex_deal: "Complex deal",
+  cannot_answer: "Question outside the knowledge base",
+  ready_to_apply: "Ready to apply",
+};
+
+/**
+ * Tickets about an existing relationship rather than new financing. They carry no product
+ * suggestions: an advisor helping with hardship or a complaint shouldn't be handed a list
+ * of new products to pitch.
+ */
+export const SERVICING_REASONS: readonly HandoffReason[] = ["complaint", "hardship", "existing_customer"];
+
 export type UIBlock =
   | { kind: "question"; question: Question }
   | { kind: "results"; result: EligibilityResult; profile: Profile }
