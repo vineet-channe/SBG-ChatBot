@@ -1,0 +1,273 @@
+{
+  "ranAt": "2026-10-28T22:51:11.493Z",
+  "retrieval": [
+    {
+      "mode": "dense",
+      "questions": 40,
+      "hitAt1": 0.775,
+      "hitAt3": 0.925,
+      "hitAt5": 0.95,
+      "mrr": 0.8479166666666668,
+      "answerableWithConfidence": 0.975,
+      "offTopicFlaggedLow": 1,
+      "misses": [
+        {
+          "q": "Do you lend in Texas?",
+          "expect": [
+            "which-states-and-industries-does-sbg-serve"
+          ],
+          "got": [
+            "sba-7-a-financing",
+            "how-much-can-i-borrow",
+            "food-trucks-financing"
+          ]
+        },
+        {
+          "q": "I'm buying a business and the SBA loan won't close for two months",
+          "expect": [
+            "bridge-capital",
+            "sba-7-a-or-conventional-financing",
+            "bridge-capital-or-a-line-of-credit"
+          ],
+          "got": [
+            "products-at-a-glance",
+            "sba-7-a-financing",
+            "sba-7-a-financing-2"
+          ]
+        },
+        {
+          "q": "When can I get more funding after my first advance?",
+          "expect": [
+            "renewals-and-additional-funding"
+          ],
+          "got": [
+            "how-quickly-will-i-get-a-decision-and-funds",
+            "company-overview",
+            "construction-financing"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "bm25",
+      "questions": 40,
+      "hitAt1": 0.475,
+      "hitAt3": 0.675,
+      "hitAt5": 0.825,
+      "mrr": 0.595,
+      "answerableWithConfidence": 1,
+      "offTopicFlaggedLow": 0.6,
+      "misses": [
+        {
+          "q": "Can I get funded with a 520 credit score?",
+          "expect": [
+            "can-i-qualify-with-bad-credit",
+            "financing-with-bad-credit"
+          ],
+          "got": [
+            "minimum-requirements",
+            "financing-terms-explained",
+            "sbg-compared-with-banks-and-typical-online-lende"
+          ]
+        },
+        {
+          "q": "what paperwork do you need from me",
+          "expect": [
+            "what-documents-do-i-need-to-apply",
+            "what-documents-do-i-need-to-apply-2"
+          ],
+          "got": [
+            "how-the-sbg-marketplace-works",
+            "working-capital-or-line-of-credit",
+            "quick-guide-by-need-2"
+          ]
+        },
+        {
+          "q": "will checking my options hurt my credit score",
+          "expect": [
+            "will-applying-affect-my-credit-score"
+          ],
+          "got": [
+            "financing-terms-explained-2",
+            "how-sbg-s-funding-calculator-estimates-an-offer",
+            "sbg-compared-with-banks-and-typical-online-lende"
+          ]
+        },
+        {
+          "q": "how fast can I get the money",
+          "expect": [
+            "how-quickly-will-i-get-a-decision-and-funds",
+            "emergency-and-fast-funding"
+          ],
+          "got": [
+            "company-overview-2",
+            "revenue-based-financing-or-a-term-loan",
+            "bridge-capital"
+          ]
+        },
+        {
+          "q": "I applied on Saturday, when will I hear back?",
+          "expect": [
+            "how-quickly-will-i-get-a-decision-and-funds",
+            "emergency-and-fast-funding",
+            "contact-sbg-funding"
+          ],
+          "got": [
+            "factor-rates-and-interest-rates",
+            "beauty-and-wellness-financing",
+            "financing-terms-explained"
+          ]
+        },
+        {
+          "q": "Do you lend in Texas?",
+          "expect": [
+            "which-states-and-industries-does-sbg-serve"
+          ],
+          "got": [
+            "sba-7-a-financing",
+            "company-overview"
+          ]
+        },
+        {
+          "q": "how much does invoice financing cost",
+          "expect": [
+            "invoice-financing",
+            "fees-at-a-glance"
+          ],
+          "got": [
+            "trucking-and-transportation-financing",
+            "healthcare-and-medical-practices-financing",
+            "trucking-and-transportation-financing-2"
+          ]
+        },
+        {
+          "q": "What's the max line of credit you offer?",
+          "expect": [
+            "business-line-of-credit",
+            "how-sbg-s-line-of-credit-calculator-works",
+            "products-at-a-glance"
+          ],
+          "got": [
+            "paying-off-early",
+            "how-much-can-i-borrow",
+            "business-heloc"
+          ]
+        },
+        {
+          "q": "What happens if my customer never pays the invoice?",
+          "expect": [
+            "invoice-financing"
+          ],
+          "got": [
+            "veterinary-practices-financing",
+            "hvac-financing",
+            "is-my-information-secure"
+          ]
+        },
+        {
+          "q": "I'm buying a business and the SBA loan won't close for two months",
+          "expect": [
+            "bridge-capital",
+            "sba-7-a-or-conventional-financing",
+            "bridge-capital-or-a-line-of-credit"
+          ],
+          "got": [
+            "quick-guide-by-need-2",
+            "quick-guide-by-need",
+            "retail-financing"
+          ]
+        },
+        {
+          "q": "term loan vs line of credit - which is better?",
+          "expect": [
+            "term-loan-or-line-of-credit",
+            "quick-guide-by-need",
+            "quick-guide-by-need-2"
+          ],
+          "got": [
+            "revenue-based-financing-2",
+            "heloc-or-a-home-equity-loan",
+            "how-the-sbg-marketplace-works"
+          ]
+        },
+        {
+          "q": "When can I get more funding after my first advance?",
+          "expect": [
+            "renewals-and-additional-funding"
+          ],
+          "got": [
+            "roofing-financing-2",
+            "if-revenue-drops-or-a-payment-will-be-hard-to-ma",
+            "how-the-sbg-marketplace-works"
+          ]
+        },
+        {
+          "q": "where do I check my balance",
+          "expect": [
+            "customer-portal-and-account-questions"
+          ],
+          "got": [
+            "paying-off-early",
+            "why-business-owners-choose-sbg",
+            "how-sbg-s-line-of-credit-calculator-works"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "hybrid",
+      "questions": 40,
+      "hitAt1": 0.7,
+      "hitAt3": 0.925,
+      "hitAt5": 0.95,
+      "mrr": 0.8133333333333332,
+      "answerableWithConfidence": 0.975,
+      "offTopicFlaggedLow": 1,
+      "misses": [
+        {
+          "q": "Do you lend in Texas?",
+          "expect": [
+            "which-states-and-industries-does-sbg-serve"
+          ],
+          "got": [
+            "sba-7-a-financing",
+            "how-much-can-i-borrow",
+            "food-trucks-financing"
+          ]
+        },
+        {
+          "q": "I'm buying a business and the SBA loan won't close for two months",
+          "expect": [
+            "bridge-capital",
+            "sba-7-a-or-conventional-financing",
+            "bridge-capital-or-a-line-of-credit"
+          ],
+          "got": [
+            "products-at-a-glance",
+            "sba-7-a-financing-2",
+            "restaurants-financing"
+          ]
+        },
+        {
+          "q": "When can I get more funding after my first advance?",
+          "expect": [
+            "renewals-and-additional-funding"
+          ],
+          "got": [
+            "how-quickly-will-i-get-a-decision-and-funds",
+            "how-the-sbg-marketplace-works-2",
+            "company-overview"
+          ]
+        }
+      ]
+    }
+  ],
+  "guardrails": {
+    "cases": 30,
+    "routeAccuracy": 1,
+    "escalationPrecision": 1,
+    "escalationRecall": 1,
+    "piiAccuracy": 1,
+    "errors": []
+  }
+}

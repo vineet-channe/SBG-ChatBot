@@ -1,0 +1,41 @@
+{
+  "name": "sterling-sbg-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sterling - a RAG-grounded funding guide for SBG Funding (interview prototype)",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "setup": "tsx scripts/setup-model.ts",
+    "kb:pdf": "tsx scripts/build-kb-pdf.ts",
+    "ingest": "tsx scripts/ingest.ts",
+    "eval": "tsx scripts/eval.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@huggingface/transformers": "^4.3.2",
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/pdfkit": "^0.17.7",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "pdfjs-dist": "^6.4.299",
+    "pdfkit": "^0.20.2",
+    "tar": "^7.5.22",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  }
+}
