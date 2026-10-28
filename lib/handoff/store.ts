@@ -35,13 +35,14 @@ export interface Ticket {
   contact?: { name: string; phone: string; email?: string; bestTime?: string; message?: string };
 }
 
+// Created at runtime, so the build has nothing to trace here (hence the turbopackIgnore hints).
 const FILE = process.env.STERLING_HANDOFF_FILE || path.join(process.cwd(), "data", "handoffs.json");
 const memory = globalThis as unknown as { __sterlingTickets?: Ticket[]; __sterlingWrite?: Promise<void> };
 
 async function load(): Promise<Ticket[]> {
   if (memory.__sterlingTickets) return memory.__sterlingTickets;
   try {
-    memory.__sterlingTickets = JSON.parse(await readFile(FILE, "utf8")) as Ticket[];
+    memory.__sterlingTickets = JSON.parse(await readFile(/* turbopackIgnore: true */ FILE, "utf8")) as Ticket[];
   } catch {
     memory.__sterlingTickets = [];
   }
@@ -52,8 +53,8 @@ async function load(): Promise<Ticket[]> {
 function persist(tickets: Ticket[]): Promise<void> {
   memory.__sterlingWrite = (memory.__sterlingWrite ?? Promise.resolve()).then(async () => {
     try {
-      await mkdir(path.dirname(FILE), { recursive: true });
-      await writeFile(FILE, JSON.stringify(tickets, null, 2));
+      await mkdir(/* turbopackIgnore: true */ path.dirname(FILE), { recursive: true });
+      await writeFile(/* turbopackIgnore: true */ FILE, JSON.stringify(tickets, null, 2));
     } catch {
       // Read-only filesystem (e.g. serverless): keep tickets in memory for this instance.
     }

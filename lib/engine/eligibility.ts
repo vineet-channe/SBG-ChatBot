@@ -235,18 +235,21 @@ function evaluateProduct(id: ProductId, profile: Profile, checks: Check[]): Prod
       match.cautions.push("You'll need a clear repayment event, like a closing date or committed payout.");
     }
   }
+  // Caveats that come with the product for everyone. They're shown, but unlike the
+  // cautions above they say nothing about this customer's fit, so they don't lower it.
+  const productCaveats: string[] = [];
   if (id === "sba_7a") {
     if (profile.creditScore !== undefined && profile.creditScore < 650) {
       match.cautions.push("SBG notes that scores of 650+ are generally stronger candidates for SBA approval.");
     }
-    match.cautions.push("More paperwork: tax returns, a P&L and SBA forms after the initial review.");
+    productCaveats.push("More paperwork: tax returns, a P&L and SBA forms after the initial review.");
   }
   if (id === "heloc") {
     if (profile.ownsHome === false) {
       match.blockers.push("Requires home equity");
     } else {
       match.why.push("Usually lower rates than unsecured financing, because your home secures it.");
-      match.cautions.push("Your home is the collateral - borrow with a clear repayment plan.");
+      productCaveats.push("Your home is the collateral - borrow with a clear repayment plan.");
     }
   }
   if (id === "equipment" && profile.amount !== undefined && profile.purpose === "equipment") {
@@ -255,6 +258,7 @@ function evaluateProduct(id: ProductId, profile: Profile, checks: Check[]): Prod
 
   match.why = [...new Set(match.why)].slice(0, 3);
   match.status = match.blockers.length > 0 ? "not_now" : match.cautions.length > 0 || match.relevance < 2 ? "possible" : "strong";
+  match.cautions.push(...productCaveats);
   return match;
 }
 
@@ -281,8 +285,8 @@ export function evaluate(profile: Profile): EligibilityResult {
     .filter((m) => m.relevance >= 1 || (m.product === "heloc" && profile.ownsHome === true));
 
   // Mirror SBG's calculator: when nothing else fits but the owner has home equity, surface the HELOC.
-  const nothingFits = matches.every((m) => m.status === "not_now");
-  if (nothingFits && profile.ownsHome === true) {
+  const nothingElseFits = matches.every((m) => m.product === "heloc" || m.status === "not_now");
+  if (nothingElseFits && profile.ownsHome === true) {
     matches = matches.map((m) => (m.product === "heloc" ? { ...m, relevance: m.relevance + 3 } : m));
   }
 

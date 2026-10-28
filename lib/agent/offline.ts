@@ -128,7 +128,7 @@ export async function offlineTurn(ctx: ToolContext, text: string, redacted = fal
   const result = await search(text, { k: 3 });
   ctx.trace("retrieval", `"${text}" -> ${result.hits.length} passages (${result.confidence} confidence, ${result.ms}ms)`, {
     confidence: result.confidence,
-    hits: result.hits.map((h) => ({ id: h.chunk.id, dense: +h.dense.toFixed(3), bm25: +h.bm25.toFixed(2) })),
+    hits: result.hits.map((h) => ({ id: h.chunk.id, dense: +h.dense.toFixed(3), bm25: +h.bm25.toFixed(2), rrf: +h.rrf.toFixed(4) })),
   });
 
   if (result.confidence === "low" || result.hits.length === 0) {
