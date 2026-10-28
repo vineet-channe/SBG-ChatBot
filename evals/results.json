@@ -1,14 +1,14 @@
 {
-  "ranAt": "2026-10-28T22:51:11.493Z",
+  "ranAt": "2026-10-28T22:53:11.336Z",
   "retrieval": [
     {
       "mode": "dense",
-      "questions": 40,
-      "hitAt1": 0.775,
-      "hitAt3": 0.925,
-      "hitAt5": 0.95,
-      "mrr": 0.8479166666666668,
-      "answerableWithConfidence": 0.975,
+      "questions": 46,
+      "hitAt1": 0.7391304347826086,
+      "hitAt3": 0.8913043478260869,
+      "hitAt5": 0.9347826086956522,
+      "mrr": 0.818840579710145,
+      "answerableWithConfidence": 0.9347826086956522,
       "offTopicFlaggedLow": 1,
       "misses": [
         {
@@ -45,16 +45,39 @@
             "company-overview",
             "construction-financing"
           ]
+        },
+        {
+          "q": "LTV equipment",
+          "expect": [
+            "equipment-financing",
+            "financing-terms-explained-2"
+          ],
+          "got": [
+            "customer-stories-2",
+            "veterinary-practices-financing-2",
+            "roofing-financing-2"
+          ]
+        },
+        {
+          "q": "Net Funding balance sheet",
+          "expect": [
+            "company-history"
+          ],
+          "got": [
+            "how-sbg-s-funding-calculator-estimates-an-offer",
+            "business-line-of-credit",
+            "revenue-based-financing"
+          ]
         }
       ]
     },
     {
       "mode": "bm25",
-      "questions": 40,
-      "hitAt1": 0.475,
-      "hitAt3": 0.675,
-      "hitAt5": 0.825,
-      "mrr": 0.595,
+      "questions": 46,
+      "hitAt1": 0.5217391304347826,
+      "hitAt3": 0.717391304347826,
+      "hitAt5": 0.8478260869565217,
+      "mrr": 0.6369565217391304,
       "answerableWithConfidence": 1,
       "offTopicFlaggedLow": 0.6,
       "misses": [
@@ -216,12 +239,12 @@
     },
     {
       "mode": "hybrid",
-      "questions": 40,
-      "hitAt1": 0.7,
-      "hitAt3": 0.925,
-      "hitAt5": 0.95,
-      "mrr": 0.8133333333333332,
-      "answerableWithConfidence": 0.975,
+      "questions": 46,
+      "hitAt1": 0.7391304347826086,
+      "hitAt3": 0.9347826086956522,
+      "hitAt5": 0.9565217391304348,
+      "mrr": 0.838768115942029,
+      "answerableWithConfidence": 0.9347826086956522,
       "offTopicFlaggedLow": 1,
       "misses": [
         {
@@ -255,8 +278,8 @@
           ],
           "got": [
             "how-quickly-will-i-get-a-decision-and-funds",
-            "how-the-sbg-marketplace-works-2",
-            "company-overview"
+            "company-overview",
+            "how-the-sbg-marketplace-works-2"
           ]
         }
       ]

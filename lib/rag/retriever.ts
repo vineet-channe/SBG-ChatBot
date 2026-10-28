@@ -36,8 +36,12 @@ export interface SearchResult {
 
 const RRF_K = 60;
 const CANDIDATES = 20;
-/** Fusion weights; dense carries more weight because BM25 is noisier on conversational questions. */
-export const FUSION_WEIGHTS = { dense: 1, bm25: 0.6 };
+/**
+ * Fusion weights, chosen with `npm run eval -- --sweep`: BM25 at 0.3 keeps dense search's
+ * accuracy on conversational questions and adds recall on exact terms (phone numbers,
+ * "UCC", "7(a)", legal names). Equal weights let BM25's noise push good passages down.
+ */
+export const FUSION_WEIGHTS = { dense: 1, bm25: 0.3 };
 // Calibrated on evals/retrieval.json: answerable questions almost always have a best
 // dense match above 0.45; off-topic questions rarely exceed 0.30.
 export const CONFIDENCE = { high: 0.5, medium: 0.33 };
@@ -63,6 +67,12 @@ export function loadIndex(): LoadedIndex {
     };
   }
   return cache.__sterlingIndex;
+}
+
+/** Loads the index and the embedding model ahead of the first question (see instrumentation.ts). */
+export async function warmUp(): Promise<void> {
+  loadIndex();
+  await embedOne("warm up");
 }
 
 function ranks(scores: number[]): number[] {
