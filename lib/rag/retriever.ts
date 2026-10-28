@@ -102,7 +102,7 @@ export async function search(
     let rrf = 0;
     if (mode !== "bm25" && denseRank[i] <= CANDIDATES) rrf += weights.dense / (RRF_K + denseRank[i]);
     if (mode !== "dense" && bm25Rank[i] <= CANDIDATES && lexical[i] > 0) rrf += weights.bm25 / (RRF_K + bm25Rank[i]);
-    const { embedding: _embedding, ...rest } = chunk;
+    const { embedding, ...rest } = chunk;
     return { chunk: rest as Chunk, dense: dense[i], bm25: lexical[i], rrf, denseRank: denseRank[i], bm25Rank: bm25Rank[i] };
   });
 

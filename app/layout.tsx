@@ -3,8 +3,8 @@ import { Host_Grotesk, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
 // The same typefaces sbgfunding.com uses.
-const display = Host_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
-const body = Instrument_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+const display = Host_Grotesk({ subsets: ["latin"], variable: "--font-host-grotesk", display: "swap" });
+const body = Instrument_Sans({ subsets: ["latin"], variable: "--font-instrument-sans", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Sterling · SBG Funding",

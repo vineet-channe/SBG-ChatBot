@@ -1,49 +1,117 @@
+/*
+ * Design tokens. Colors are SBG Funding's own brand variables (sbgfunding.com:
+ * --c--brand-primary-*, --c--brand-secondary-*, --c--brand-contextual-*), and the
+ * fonts are the ones SBG uses: Host Grotesk for display, Instrument Sans for text.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy-900: #001530;
+  --navy-800: #002b60;
+  --navy-700: #004091;
+  --blue-600: #0056c1;
+  --blue-500: #006bf1;
+  --blue-400: #3389f4;
+  --blue-200: #9cc3fa;
+  --blue-100: #dbe9fd;
+  --cyan: #36b6ff;
+  --neon: #dee70e;
+  --neon-hover: #f5ff33;
+  --neon-press: #b2bb02;
+  --mist: #eef2f9;
+  --line: #c4cede;
+  --muted: #616f91;
+  --ink: #0f2246;
+  --white: #ffffff;
+  --success: #1f9d6b;
+  --alert: #c2410c;
+
+  --panel: rgba(246, 249, 255, 0.95);
+  --panel-line: rgba(255, 255, 255, 0.7);
+  --option-line: #84b2f2;
+
+  --font-display: var(--font-host-grotesk, "Host Grotesk"), system-ui, sans-serif;
+  --font-text: var(--font-instrument-sans, "Instrument Sans"), system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --shadow-panel: 0 30px 80px -20px rgba(0, 21, 48, 0.55), 0 2px 0 rgba(255, 255, 255, 0.35) inset;
+  --ease: cubic-bezier(0.44, 0, 0.35, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+  font-family: var(--font-text);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--navy-900);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(222, 231, 14, 0.55);
+  color: var(--navy-900);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

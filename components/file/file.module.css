@@ -1,0 +1,319 @@
+/* The funding file: the structured record the conversation builds, handed to an advisor. */
+
+.file {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(0, 21, 48, 0.78) 0%, rgba(0, 43, 96, 0.7) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-panel);
+  color: var(--white);
+  overflow: hidden;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 22px 18px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.tab svg {
+  color: var(--neon);
+}
+
+.title {
+  margin: 14px 0 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.meter {
+  display: grid;
+  gap: 6px;
+  margin: 16px 0 6px;
+}
+
+.meterTrack {
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.meterFill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue-400));
+  transition: width 420ms var(--ease);
+}
+
+.meterLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.section {
+  margin-top: 14px;
+}
+
+.sectionLabel {
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rows {
+  margin: 0;
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 10px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.row dt {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.row dd {
+  margin: 0;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+}
+
+/* The highlighter: a neon stroke sweeps under a value the moment it is captured. */
+.value {
+  position: relative;
+  padding: 0 3px;
+  border-radius: 3px;
+  background-image: linear-gradient(transparent 58%, rgba(222, 231, 14, 0.55) 58%, rgba(222, 231, 14, 0.55) 92%, transparent 92%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left;
+}
+
+.value[data-via="ai"] {
+  animation: highlight 900ms var(--ease) 120ms forwards;
+}
+
+.value[data-via="answer"] {
+  animation: settle 500ms var(--ease) both;
+}
+
+.fromChat {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+.minimums {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.minimum {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: center;
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.4);
+  transition: background 260ms var(--ease), border-color 260ms var(--ease), color 260ms var(--ease);
+}
+
+.minimum[data-status="pass"] .mark {
+  background: var(--neon);
+  border-color: var(--neon);
+  color: var(--navy-900);
+  animation: tick 360ms var(--ease) both;
+}
+
+.minimum[data-status="fail"] .mark {
+  background: rgba(255, 140, 90, 0.18);
+  border-color: rgba(255, 140, 90, 0.7);
+  color: #ffb08a;
+}
+
+.best {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bestName {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.015em;
+}
+
+.bestMeta {
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 22px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.shared {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--neon);
+  font-weight: 600;
+}
+
+.reset {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.reset:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.close {
+  display: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  place-items: center;
+}
+
+@keyframes highlight {
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tick {
+  0% {
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .file {
+    border-radius: 24px 24px 0 0;
+    max-height: 82dvh;
+    background: linear-gradient(180deg, #001530 0%, #002b60 100%);
+  }
+  .close {
+    display: grid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .value[data-via="ai"] {
+    background-size: 100% 100%;
+  }
+}
