@@ -70,7 +70,7 @@ flowchart LR
     VOICE[Web Speech API<br/>voice in / read aloud]
   end
 
-  subgraph "Next.js server (/api/chat, streams NDJSON)"
+  subgraph "Next.js server (/api/chat)"
     ORCH[Orchestrator<br/>one turn end to end]
     GUARD[Input guardrails<br/>PII redaction, routing,<br/>injection flag]
     FLOW[Guided flow<br/>state machine]
@@ -138,7 +138,7 @@ npm test
 
 ```
 app/                    Next.js routes: chat UI, advisor inbox, /api/chat, /api/handoff, /api/health
-components/             UI: chat, question/result/estimate/handoff cards, funding file, inspector, inbox
+components/             UI: chat, cards, funding file, inspector, advisor inbox
 lib/agent/              Claude client, system prompt, tool definitions, agent loop, offline fallback
 lib/chat/               Turn orchestrator and the client-server protocol
 lib/engine/             Profile, guided flow, eligibility, calculator model, guardrails, business hours
@@ -149,7 +149,7 @@ knowledge/              Knowledge base sources (Markdown) and the generated PDF
 scripts/                setup-model, build-kb-pdf, ingest, eval
 evals/                  Golden sets and the latest results
 tests/                  Unit and contract tests
-docs/                   Architecture, study guide, interview prep, research notes
+docs/                   Study guide, architecture, interview prep, research notes (+ PDFs)
 ```
 
 ## Scripts

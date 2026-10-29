@@ -30,16 +30,23 @@ Sterling's job is to be the first ten minutes of an advisor conversation, availa
 ## 2. Components
 
 ```
-Browser (React, client-only)                     Server (Next.js route handlers, Node runtime)
------------------------------                    ----------------------------------------------
-useChat         holds ClientState  ──POST──►     /api/chat     ──►  orchestrator.handleTurn()
-Conversation    renders events     ◄─NDJSON──                         ├─ guardrails.checkInput()
-FundingFile     profile panel                                         ├─ flow (next question)
-Inspector       trace viewer                                          ├─ agent.runAgent()  ──► Claude Messages API
-Voice           Web Speech API                                        │    └─ tools ──► retriever / eligibility / estimator / escalate
-                                                                      ├─ offline.offlineTurn()   (fallback)
-Advisor inbox   polls tickets    ──GET/PATCH──►  /api/handoff  ──►  handoff/store (JSON file)
-                                                 /api/health   ──►  model + index status
+Browser (React, client-only)
+  useChat         holds ClientState; POSTs each turn to /api/chat and reads the NDJSON reply
+  Conversation    renders text, cards and sources as events arrive
+  FundingFile     the profile panel
+  Inspector       the per-turn trace ("Under the hood")
+  Voice           Web Speech API: speech in, replies read aloud
+  Advisor inbox   polls /api/handoff and updates ticket status
+
+Server (Next.js route handlers, Node runtime)
+  /api/chat     ──► orchestrator.handleTurn()
+                      ├─ guardrails.checkInput()
+                      ├─ flow (next question)
+                      ├─ agent.runAgent() ──► Claude Messages API
+                      │    └─ tools ──► retriever / eligibility / estimator / escalate
+                      └─ offline.offlineTurn()   (fallback)
+  /api/handoff  ──► handoff/store (JSON file)
+  /api/health   ──► model + index status
 ```
 
 | Module | Responsibility |
@@ -92,7 +99,7 @@ The response is newline-delimited JSON, one event per line:
 {"type":"status","label":"Searching SBG's knowledge base"}
 {"type":"profile","profile":{...},"changed":["industry","businessType"],"via":"ai"}
 {"type":"text","delta":"Yes. Draws on a business line"}
-{"type":"sources","sources":[{"n":1,"title":"Business line of credit","url":"https://sbgfunding.com/..."}]}
+{"type":"sources","sources":[{"n":1,"title":"Business line of credit","url":"..."}]}
 {"type":"ui","block":{"kind":"question","question":{...}}}
 {"type":"state","state":{...}}
 {"type":"done"}
