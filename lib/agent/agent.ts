@@ -12,7 +12,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { HistoryTurn } from "@/lib/chat/protocol";
 import { checkOutput } from "@/lib/engine/guardrails";
 import { hoursStatus } from "@/lib/engine/hours";
-import { EFFORT, FALLBACK_BETA, getClient, MODEL } from "./client";
+import { EFFORT, fallbackParams, getClient, MODEL } from "./client";
 import { buildAppState, SYSTEM_PROMPT } from "./prompt";
 import { runTool, TOOL_STATUS, TOOLS, type ToolContext } from "./tools";
 
@@ -65,8 +65,7 @@ export async function runAgent(ctx: ToolContext, history: HistoryTurn[], userTex
       const stream = client.beta.messages.stream({
         model: MODEL,
         max_tokens: MAX_TOKENS,
-        betas: [FALLBACK_BETA],
-        fallbacks: "default",
+        ...fallbackParams(),
         thinking: { type: "adaptive" },
         output_config: { effort: EFFORT },
         system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],

@@ -16,6 +16,14 @@ export const EFFORT = (process.env.ANTHROPIC_EFFORT || "low") as "low" | "medium
 /** Server-side refusal fallbacks: if a safety classifier declines, Anthropic retries on a fallback model. */
 export const FALLBACK_BETA = "server-side-fallback-2026-07-01";
 
+/**
+ * Request fields that turn on server-side fallbacks. It's a beta, so it can be switched
+ * off (ANTHROPIC_FALLBACKS=off) for an account that doesn't have it. Read per request.
+ */
+export function fallbackParams(): { betas?: string[]; fallbacks?: "default" } {
+  return process.env.ANTHROPIC_FALLBACKS === "off" ? {} : { betas: [FALLBACK_BETA], fallbacks: "default" };
+}
+
 const cache = globalThis as unknown as { __sterlingClient?: Anthropic | null };
 
 export function getClient(): Anthropic | null {

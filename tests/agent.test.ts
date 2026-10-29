@@ -131,6 +131,19 @@ describe("agent loop against the Messages API", () => {
     expect(text).toContain("844-284-2725");
   });
 
+  it("leaves out the fallback beta when ANTHROPIC_FALLBACKS=off", async () => {
+    process.env.ANTHROPIC_FALLBACKS = "off";
+    try {
+      mock.setScript([{ blocks: [{ type: "text", text: "Happy to help." }], stopReason: "end_turn" }]);
+      await run(fresh(), { type: "text", text: "Hello there" });
+      const [request] = mock.requests;
+      expect(request.body.fallbacks).toBeUndefined();
+      expect(String(request.headers["anthropic-beta"] ?? "")).not.toContain("server-side-fallback");
+    } finally {
+      delete process.env.ANTHROPIC_FALLBACKS;
+    }
+  });
+
   it("falls back to retrieval-only answers when the API errors", async () => {
     mock.setScript([{ httpError: 400, message: "bad request" }]);
     const { events, text } = await run(fresh(), { type: "text", text: "Do you require tax returns to apply?" });

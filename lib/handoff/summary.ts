@@ -4,7 +4,7 @@
  * model-written summary replaces it a moment later (in the background).
  */
 import Anthropic from "@anthropic-ai/sdk";
-import { EFFORT, FALLBACK_BETA, getClient, MODEL } from "@/lib/agent/client";
+import { EFFORT, fallbackParams, getClient, MODEL } from "@/lib/agent/client";
 import { REASON_LABELS, SERVICING_REASONS } from "@/lib/chat/protocol";
 import { describeField, FIELD_LABELS, money, type ProfileField, type Purpose, type Timeline } from "@/lib/engine/profile";
 import type { Ticket } from "./store";
@@ -94,8 +94,7 @@ export async function aiSummary(ticket: Ticket): Promise<string | null> {
     const response = await client.beta.messages.create({
       model: MODEL,
       max_tokens: 2000,
-      betas: [FALLBACK_BETA],
-      fallbacks: "default",
+      ...fallbackParams(),
       output_config: { effort: EFFORT },
       system:
         "You write handoff notes for SBG Funding advisors. In at most three short sentences of plain text: who the customer is and what they need; where they stand against SBG's published minimums and which products fit; why they were escalated and anything the advisor should handle with care. Use only the facts provided. No greeting, no bullet points.",

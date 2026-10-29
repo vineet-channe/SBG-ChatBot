@@ -27,8 +27,13 @@ async function loadExtractor(): Promise<Extractor> {
   const { pipeline, env } = await import("@huggingface/transformers");
   env.allowRemoteModels = false; // never reach out to the network at runtime
   env.localModelPath = path.join(process.cwd(), "models");
-  const extractor = await pipeline("feature-extraction", EMBEDDING_MODEL, { dtype: "fp32" });
-  return extractor as unknown as Extractor;
+  try {
+    const extractor = await pipeline("feature-extraction", EMBEDDING_MODEL, { dtype: "fp32" });
+    return extractor as unknown as Extractor;
+  } catch (err) {
+    const reason = err instanceof Error ? err.message : String(err);
+    throw new Error(`Embedding model not found in ./models (run \`npm run setup\`): ${reason}`);
+  }
 }
 
 function getExtractor(): Promise<Extractor> {

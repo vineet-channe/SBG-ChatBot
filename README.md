@@ -132,7 +132,7 @@ Guardrail routing, 35 messages (`evals/routing.json`): 100% route accuracy, esca
 npm test
 ```
 
-99 tests. Unit tests cover the calculator model (against values computed by hand from SBG's formulas), eligibility and product ranking, the intake flow, guardrails, BM25 and retrieval-only answers. Contract tests drive the agent loop against a mock of the Messages API that streams real server-sent events.
+100 tests. Unit tests cover the calculator model (against values computed by hand from SBG's formulas), eligibility and product ranking, the intake flow, guardrails, BM25 and retrieval-only answers. Contract tests drive the agent loop against a mock of the Messages API that streams real server-sent events.
 
 ## Project layout
 
@@ -170,8 +170,23 @@ docs/                   Architecture, study guide, interview prep, research note
 | `ANTHROPIC_API_KEY` | none | Enables Claude. Without it, retrieval-only mode. |
 | `ANTHROPIC_MODEL` | a current Claude model | Which Claude model to use |
 | `ANTHROPIC_EFFORT` | `low` | Reasoning effort: `low` keeps replies fast for chat |
+| `ANTHROPIC_FALLBACKS` | on | Set to `off` to stop requesting server-side refusal fallbacks (a beta) |
 | `STERLING_OFFLINE` | unset | Set to `1` to force retrieval-only mode |
 | `STERLING_HANDOFF_FILE` | `data/handoffs.json` | Where tickets are stored |
+
+## Troubleshooting
+
+"Under the hood" shows which mode is active and any Claude API error for each message.
+
+| You see | Fix |
+| --- | --- |
+| Language model: offline (retrieval-only) | The key wasn't loaded. Check `.env.local` and restart the server. |
+| Claude API error 401 | The key is invalid or revoked. |
+| Claude API error 404 (model not found) | Set `ANTHROPIC_MODEL` to a model your account can use. |
+| Claude API error 400 mentioning fallbacks or betas | Set `ANTHROPIC_FALLBACKS=off`. |
+| "Embedding model not found in ./models" | Run `npm run setup`, then restart. |
+
+Model errors never break the app: that message falls back to retrieval-only mode and the trace records why.
 
 ## Known limitations
 
