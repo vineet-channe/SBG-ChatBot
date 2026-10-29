@@ -1,6 +1,7 @@
-/** Offline mode's pattern extraction: what it can pull from a message without the model. */
+/** Retrieval-only mode: what it can pull from a message, and how it answers, without the model. */
 import { describe, expect, it } from "vitest";
-import { extractProfile } from "@/lib/agent/offline";
+import { extractProfile, offlineTurn } from "@/lib/agent/offline";
+import type { ToolContext } from "@/lib/agent/tools";
 
 describe("extractProfile", () => {
   it("pulls a whole profile out of one sentence", () => {
@@ -32,5 +33,34 @@ describe("extractProfile", () => {
 
   it("reads written-out units", () => {
     expect(extractProfile("Looking for 250 thousand to open a second location")).toEqual({ amount: 250_000, purpose: "expansion" });
+  });
+});
+
+describe("offlineTurn", () => {
+  const context = () =>
+    ({ state: { sessionId: "test", profile: {}, history: [] }, emit: () => {}, trace: () => {}, defer: () => {}, sources: new Map() }) as unknown as ToolContext;
+
+  it("notes business details from a statement", async () => {
+    const ctx = context();
+    const reply = await offlineTurn(ctx, "I run a roofing company, an LLC, 3 years in business, about $80K a month");
+    expect(ctx.state.profile).toMatchObject({ industry: "roofing", businessType: "llc", monthlyRevenue: 80_000 });
+    expect(reply).toContain("in your funding file");
+  });
+
+  it("answers a question instead of treating a product name as a need", async () => {
+    const ctx = context();
+    const reply = await offlineTurn(ctx, "How fast can equipment financing fund?");
+    expect(ctx.state.profile).toEqual({});
+    expect(reply).toMatch(/^From SBG's materials, under \*\*Equipment financing\*\*/);
+  });
+
+  it("quotes the opening of a split section, where the direct answer is", async () => {
+    const reply = await offlineTurn(context(), "What do I need to apply?");
+    expect(reply).toContain("4 most recent business bank statements");
+  });
+
+  it("declines when nothing in the knowledge base matches", async () => {
+    const reply = await offlineTurn(context(), "Who won the World Series in 1986?");
+    expect(reply).toMatch(/couldn't find that in SBG's materials/);
   });
 });

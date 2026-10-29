@@ -132,7 +132,7 @@ Guardrail routing, 35 messages (`evals/routing.json`): 100% route accuracy, esca
 npm test
 ```
 
-95 unit tests cover the calculator model (against values computed by hand from SBG's formulas), eligibility and product ranking, the intake flow, guardrails, BM25 and offline extraction. Contract tests drive the agent loop against a mock of the Messages API that streams real server-sent events.
+99 tests. Unit tests cover the calculator model (against values computed by hand from SBG's formulas), eligibility and product ranking, the intake flow, guardrails, BM25 and retrieval-only answers. Contract tests drive the agent loop against a mock of the Messages API that streams real server-sent events.
 
 ## Project layout
 

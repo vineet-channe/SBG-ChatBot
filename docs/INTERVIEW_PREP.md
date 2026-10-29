@@ -21,7 +21,7 @@
 | 1:45 | Type: *How fast can equipment financing fund?* | "Facts come from retrieval over SBG's content: hybrid keyword and semantic search, cited inline. If it can't find something, it says so and offers a person." |
 | 2:05 | Open "Under the hood" | "Every turn is traced: guardrails, retrieval scores, tool calls, model, tokens, latency. It's how I debugged it, and how you'd monitor it." |
 | 2:25 | Click "Talk to a specialist", then switch to the inbox tab | "The advisor gets the profile, a summary to read first and the transcript, so the customer never repeats themselves. Hardship and complaints are matched by rules before the model sees them, and they're marked high priority." |
-| 2:50 | Close | "Without an API key it still works in retrieval-only mode. There are 95 tests, and retrieval and routing evals are in the README." |
+| 2:50 | Close | "Without an API key it still works in retrieval-only mode. There are 99 tests, and retrieval and routing evals are in the README." |
 
 If anything breaks: the guided flow, results, estimate and handoff don't need the model. If the model fails, the inspector shows the fallback and the app keeps working. Screenshots of every screen are in `docs/screenshots/` as a backup.
 
@@ -137,7 +137,7 @@ Use STAR: situation, task, action, result. Keep each to about 90 seconds. Also p
 | Confidence | high ≥ 0.50 cosine, low < 0.33 |
 | Retrieval eval | hybrid hit@3 93.5%, hit@5 95.7%, MRR 0.839 (46 questions) |
 | Routing eval | 35 cases, all correct |
-| Tests | 95 |
+| Tests | 99 |
 | Agent | 5 tools, up to 6 steps, history capped at 24 turns |
 
 | SBG Funding | |

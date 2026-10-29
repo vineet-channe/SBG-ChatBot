@@ -7,8 +7,9 @@
  *      knowledge base, or offers a specialist when nothing matches.
  * Less fluent than the model, but never wrong in a way the knowledge base isn't.
  */
-import { FIELD_LABELS, mergeProfile, monthsToBucket, type Profile, type ProfileField } from "@/lib/engine/profile";
-import { search } from "@/lib/rag/retriever";
+import { describeField, FIELD_LABELS, mergeProfile, monthsToBucket, type Profile, type ProfileField } from "@/lib/engine/profile";
+import { tokenize } from "@/lib/rag/bm25";
+import { loadIndex, search } from "@/lib/rag/retriever";
 import type { IndustryId } from "@/lib/sbg/industries";
 import type { ToolContext } from "./tools";
 
@@ -97,13 +98,23 @@ export function extractProfile(text: string): Partial<Profile> {
   return Object.fromEntries(Object.entries(out).filter(([, v]) => v !== undefined)) as Partial<Profile>;
 }
 
-function firstSentences(text: string, n: number): string {
+/** The passage's opening sentences, plus the bullets that share the most words with the question. */
+function excerpt(text: string, question: string): string {
   const lines = text.split("\n");
   const prose = lines.filter((l) => !l.startsWith("- ")).join(" ");
-  const sentences = (prose.match(/[^.!?]+[.!?]+/g) ?? [prose]).map((s) => s.trim());
-  const bullets = lines.filter((l) => l.startsWith("- ")).slice(0, 3);
-  return [sentences.slice(0, n).join(" "), ...bullets].filter(Boolean).join("\n");
+  const opening = (prose.match(/[^.!?]+[.!?]+/g) ?? [prose]).map((s) => s.trim()).slice(0, 3).join(" ");
+  const terms = new Set(tokenize(question));
+  const bullets = lines
+    .map((line, i) => ({ line, i, overlap: tokenize(line).filter((t) => terms.has(t)).length }))
+    .filter((b) => b.line.startsWith("- "))
+    .sort((a, b) => b.overlap - a.overlap || a.i - b.i)
+    .slice(0, 3)
+    .sort((a, b) => a.i - b.i)
+    .map((b) => b.line);
+  return [opening, ...bullets].filter(Boolean).join("\n");
 }
+
+const QUESTION_START = /^\s*(what|how|when|where|why|who|which|can|could|do|does|did|is|are|will|would|should)\b/i;
 
 const PII_REPLY =
   "For your security I removed that number from our chat. SBG never needs it here: you'll share what's required in the secure application, and applying only uses a soft credit pull.";
@@ -113,16 +124,23 @@ export async function offlineTurn(ctx: ToolContext, text: string, redacted = fal
     ctx.emit({ type: "text", delta: PII_REPLY });
     return PII_REPLY;
   }
+  const question = /\?\s*$/.test(text) || QUESTION_START.test(text);
   const extracted = extractProfile(text);
+  // In a question, a product name ("how fast is equipment financing?") isn't a stated need.
+  if (question) delete extracted.purpose;
   const { profile, changed } = mergeProfile(ctx.state.profile, extracted);
   if (changed.length > 0) {
     ctx.state.profile = profile;
     if (!ctx.state.intent) ctx.state.intent = "find";
     ctx.emit({ type: "profile", profile, changed, via: "ai" });
     ctx.trace("tool", `Pattern extraction: ${changed.map((f: ProfileField) => FIELD_LABELS[f]).join(", ")}`, extracted);
-    const reply = `Thanks - I've added ${changed.map((f) => FIELD_LABELS[f].toLowerCase()).join(", ")} to your funding file.`;
-    ctx.emit({ type: "text", delta: reply });
-    return reply;
+    if (!question) {
+      const noted = changed.map((f) => `${FIELD_LABELS[f].toLowerCase()} (${describeField(f, profile)})`);
+      const list = noted.length > 1 ? `${noted.slice(0, -1).join(", ")} and ${noted.at(-1)}` : noted[0];
+      const reply = `Thanks - I've noted your ${list} in your funding file.`;
+      ctx.emit({ type: "text", delta: reply });
+      return reply;
+    }
   }
 
   const result = await search(text, { k: 3 });
@@ -141,8 +159,16 @@ export async function offlineTurn(ctx: ToolContext, text: string, redacted = fal
     return reply;
   }
 
-  const top = result.hits[0].chunk;
-  const reply = `Here's what SBG's materials say about **${top.title.toLowerCase()}**:\n\n${firstSentences(top.text, 3)} [1]`;
+  // Long sections are split into several chunks, and a short continuation can outrank the
+  // section's opening, which usually holds the direct answer. Quote the opening when it
+  // was retrieved too.
+  const position = (id: string) => loadIndex().index.chunks.findIndex((c) => c.id === id);
+  const best = result.hits[0].chunk;
+  const top = result.hits
+    .map((h) => h.chunk)
+    .filter((c) => c.section === best.section && c.title === best.title)
+    .sort((a, b) => position(a.id) - position(b.id))[0];
+  const reply = `From SBG's materials, under **${top.title}**:\n\n${excerpt(top.text, text)} [1]`;
   ctx.sources.set(top.id, { n: 1, title: top.title, section: top.section, url: top.source, snippet: top.text.slice(0, 240) });
   ctx.emit({ type: "text", delta: reply });
   return reply;
