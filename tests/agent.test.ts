@@ -10,6 +10,7 @@ import type { ChatEvent, ChatInput, ClientState } from "@/lib/chat/protocol";
 
 let mock: Awaited<ReturnType<typeof startMockAnthropic>>;
 let handleTurn: typeof import("@/lib/chat/orchestrator").handleTurn;
+let MODEL: string;
 
 beforeAll(async () => {
   mock = await startMockAnthropic();
@@ -17,6 +18,7 @@ beforeAll(async () => {
   process.env.ANTHROPIC_BASE_URL = mock.url;
   delete process.env.STERLING_OFFLINE;
   ({ handleTurn } = await import("@/lib/chat/orchestrator"));
+  ({ MODEL } = await import("@/lib/agent/client"));
 });
 
 afterAll(async () => {
@@ -50,14 +52,14 @@ describe("agent loop against the Messages API", () => {
     const [first, second] = mock.requests;
     expect(first.url).toContain("/v1/messages");
     expect(first.headers["anthropic-beta"]).toContain("server-side-fallback-2026-07-01");
-    expect(first.body.model).toBe("claude-opus-5-5");
+    expect(first.body.model).toBe(MODEL);
     expect(first.body.fallbacks).toBe("default");
     expect(first.body.thinking).toEqual({ type: "adaptive" });
     expect(first.body.output_config).toEqual({ effort: "low" });
     expect(first.body.stream).toBe(true);
     expect(first.body.system[0].cache_control).toEqual({ type: "ephemeral" });
     expect(first.body.tools.every((t: { eager_input_streaming?: boolean }) => t.eager_input_streaming)).toBe(true);
-    expect(first.body.tool_choice).toBeUndefined(); // forced tool use is rejected on Opus 5.5
+    expect(first.body.tool_choice).toBeUndefined(); // forced tool use can't be combined with thinking
     const lastUser = first.body.messages.at(-1);
     expect(lastUser.role).toBe("user");
     expect(lastUser.content[0].text).toContain("<app_state>");

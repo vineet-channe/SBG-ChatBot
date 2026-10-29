@@ -9,7 +9,7 @@
  *
  * How the funding model works:
  *   1. Time in business, credit score and monthly revenue each earn points.
- *   2. The total (2-36) picks a pricing tier; below 10 there is no automatic estimate.
+ *   2. The total (1-36) picks a pricing tier; below 10 there is no automatic estimate.
  *   3. The tier sets a revenue multiplier, a rate factor, a term and a payment frequency.
  *   4. Max amount = (revenue, rounded up to its bracket) x multiplier, rounded up to $100.
  *   5. Payment = amount x rate factor / number of payments; total cost = amount x (factor - 1).

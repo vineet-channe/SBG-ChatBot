@@ -114,7 +114,7 @@ export const money = (n: number, opts: { compact?: boolean } = {}) =>
 const labelOf = <T extends readonly { value: string; label: string }[]>(list: T, v?: string) =>
   list.find((o) => o.value === v)?.label;
 
-/** Human-readable value for each field, used by the snapshot panel and summaries. */
+/** Human-readable value for each field, used by the funding file panel and summaries. */
 export function describeField(field: ProfileField, profile: Profile): string | undefined {
   switch (field) {
     case "purpose": return labelOf(PURPOSES, profile.purpose);

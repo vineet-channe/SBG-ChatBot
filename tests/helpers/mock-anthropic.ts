@@ -26,11 +26,11 @@ export interface RecordedRequest {
 
 const sse = (event: string, data: object) => `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
 
-function render(turn: Extract<MockTurn, { blocks: unknown }>, n: number): string {
+function render(turn: Extract<MockTurn, { blocks: unknown }>, n: number, model: string): string {
   let out = sse("message_start", {
     type: "message_start",
     message: {
-      id: `msg_mock_${n}`, type: "message", role: "assistant", model: "claude-opus-5-5", content: [],
+      id: `msg_mock_${n}`, type: "message", role: "assistant", model, content: [],
       stop_reason: null, stop_sequence: null,
       usage: { input_tokens: 1800, output_tokens: 1, cache_read_input_tokens: 1500, cache_creation_input_tokens: 0 },
     },
@@ -77,7 +77,7 @@ export async function startMockAnthropic() {
         return;
       }
       res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache" });
-      res.end(render(turn, requests.length));
+      res.end(render(turn, requests.length, body.model));
     });
   });
 

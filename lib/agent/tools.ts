@@ -37,7 +37,7 @@ const REASONS = ["requested", "existing_customer", "complaint", "hardship", "can
 
 export const TOOL_STATUS: Record<string, string> = {
   search_knowledge_base: "Searching SBG's knowledge base…",
-  update_business_profile: "Updating your funding snapshot…",
+  update_business_profile: "Updating your funding file…",
   check_eligibility: "Checking SBG's published requirements…",
   estimate_funding: "Running SBG's funding calculator…",
   escalate_to_human: "Connecting you with a funding specialist…",

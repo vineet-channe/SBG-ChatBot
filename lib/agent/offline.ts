@@ -120,7 +120,7 @@ export async function offlineTurn(ctx: ToolContext, text: string, redacted = fal
     if (!ctx.state.intent) ctx.state.intent = "find";
     ctx.emit({ type: "profile", profile, changed, via: "ai" });
     ctx.trace("tool", `Pattern extraction: ${changed.map((f: ProfileField) => FIELD_LABELS[f]).join(", ")}`, extracted);
-    const reply = `Thanks - I've added ${changed.map((f) => FIELD_LABELS[f].toLowerCase()).join(", ")} to your funding snapshot.`;
+    const reply = `Thanks - I've added ${changed.map((f) => FIELD_LABELS[f].toLowerCase()).join(", ")} to your funding file.`;
     ctx.emit({ type: "text", delta: reply });
     return reply;
   }

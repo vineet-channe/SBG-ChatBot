@@ -145,7 +145,7 @@ export async function runAgent(ctx: ToolContext, history: HistoryTurn[], userTex
 
   const correction = checkOutput(text);
   if (correction) {
-    ctx.trace("guardrail", "Output guardrail: removed an approval promise");
+    ctx.trace("guardrail", "Output guardrail: appended a correction to an approval promise");
     const addition = `\n\n${correction}`;
     ctx.emit({ type: "text", delta: addition });
     text += addition;

@@ -4,7 +4,7 @@
  * The server is stateless: the client sends the conversation state with every request
  * and gets back a stream of newline-delimited JSON events (NDJSON). Each event is
  * small and self-describing, so the UI can render text as it streams, update the
- * snapshot panel the moment a field is captured, and show the trace in the inspector.
+ * funding file panel the moment a field is captured, and show the trace in the inspector.
  */
 import type { EligibilityResult } from "@/lib/engine/eligibility";
 import type { Intent, Question } from "@/lib/engine/flow";
